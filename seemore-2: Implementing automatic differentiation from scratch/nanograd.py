@@ -4,7 +4,7 @@ class Value:
         self.grad = 0
         self._deps = set(deps)
         self._op = op
-        self._backward = None
+        self._backward = lambda: None
 
     def __repr__(self):
         test = [x.data for x in self._deps]
@@ -23,7 +23,7 @@ class Value:
         return result
     
     def __radd__(self, other):
-        return  other + self
+        return self + other
 
     def __mul__(self, other):
         other = other if isinstance(other, Value) else Value(other)
@@ -37,7 +37,7 @@ class Value:
         return result
     
     def __rmul__(self, other):
-        return other * self
+        return self * other
     
     def backward(self):
         topo = []
